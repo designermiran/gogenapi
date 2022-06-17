@@ -1,0 +1,235 @@
+package controllers
+
+import (
+	"encoding/json"
+	"net/http"
+
+	dbpkg "{{ .ImportDir }}/db"
+	"{{ .ImportDir }}/helper"
+	"{{ .ImportDir }}/models"
+	"{{ .ImportDir }}/version"
+
+	"github.com/gin-gonic/gin"
+)
+
+func Get{{ pluralize .Model.Name }}(c *gin.Context) {
+	ver, err := version.New(c)
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	db := dbpkg.DBInstance(c)
+	parameter, err := dbpkg.NewParameter(c, models.{{ .Model.Name }}{})
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	db, err = parameter.Paginate(db)
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	db = parameter.SetPreloads(db)
+	db = parameter.SortRecords(db)
+	db = parameter.FilterFields(db)
+	{{ pluralize (toLowerCamelCase .Model.Name) }} := []models.{{ .Model.Name }}{}
+	fields := helper.ParseFields(c.DefaultQuery("fields", "*"))
+	queryFields := helper.QueryFields(models.{{ .Model.Name }}{}, fields)
+
+	if err := db.Select(queryFields).Find(&{{ pluralize (toLowerCamelCase .Model.Name) }}).Error; err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	index := 0
+
+	if len({{ pluralize (toLowerCamelCase .Model.Name) }}) > 0 {
+		index = int({{ pluralize (toLowerCamelCase .Model.Name) }}[len({{ pluralize (toLowerCamelCase .Model.Name) }})-1].ID)
+	}
+
+	if err := parameter.SetHeaderLink(c, index); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if version.Range("1.0.0", "<=", ver) && version.Range(ver, "<", "2.0.0") {
+		// conditional branch by version.
+		// 1.0.0 <= this version < 2.0.0 !!
+	}
+
+	if _, ok := c.GetQuery("stream"); ok {
+		enc := json.NewEncoder(c.Writer)
+		c.Status(200)
+
+		for _, {{ toLowerCamelCase .Model.Name }} := range {{ pluralize (toLowerCamelCase .Model.Name) }} {
+			fieldMap, err := helper.FieldToMap({{ toLowerCamelCase .Model.Name }}, fields)
+			if err != nil {
+				c.JSON(400, gin.H{"error": err.Error()})
+				return
+			}
+
+			if err := enc.Encode(fieldMap); err != nil {
+				c.JSON(400, gin.H{"error": err.Error()})
+				return
+			}
+		}
+	} else {
+		fieldMaps := []map[string]interface{}{}
+
+		for _, {{ toLowerCamelCase .Model.Name }} := range {{ pluralize (toLowerCamelCase .Model.Name) }} {
+			fieldMap, err := helper.FieldToMap({{ toLowerCamelCase .Model.Name }}, fields)
+			if err != nil {
+				c.JSON(400, gin.H{"error": err.Error()})
+				return
+			}
+
+			fieldMaps = append(fieldMaps, fieldMap)
+		}
+
+		if _, ok := c.GetQuery("pretty"); ok {
+			c.IndentedJSON(200, fieldMaps)
+		} else {
+			c.JSON(200, fieldMaps)
+		}
+	}
+}
+
+func Get{{ .Model.Name }}(c *gin.Context) {
+	ver, err := version.New(c)
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	db := dbpkg.DBInstance(c)
+	parameter, err := dbpkg.NewParameter(c, models.{{ .Model.Name }}{})
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	db = parameter.SetPreloads(db)
+	{{ toLowerCamelCase .Model.Name }} := models.{{ .Model.Name }}{}
+	id := c.Params.ByName("id")
+	fields := helper.ParseFields(c.DefaultQuery("fields", "*"))
+	queryFields := helper.QueryFields(models.{{ .Model.Name }}{}, fields)
+
+	if err := db.Select(queryFields).First(&{{ toLowerCamelCase .Model.Name }}, id).Error; err != nil {
+		content := gin.H{"error": "{{ toSnakeCase .Model.Name }} with id#" + id + " not found"}
+		c.JSON(404, content)
+		return
+	}
+
+	fieldMap, err := helper.FieldToMap({{ toLowerCamelCase .Model.Name }}, fields)
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if version.Range("1.0.0", "<=", ver) && version.Range(ver, "<", "2.0.0") {
+		// conditional branch by version.
+		// 1.0.0 <= this version < 2.0.0 !!
+	}
+
+	if _, ok := c.GetQuery("pretty"); ok {
+		c.IndentedJSON(200, fieldMap)
+	} else {
+		c.JSON(200, fieldMap)
+	}
+}
+
+func Create{{ .Model.Name }}(c *gin.Context) {
+	ver, err := version.New(c)
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	db := dbpkg.DBInstance(c)
+	{{ toLowerCamelCase .Model.Name }} := models.{{ .Model.Name }}{}
+
+	if err := c.Bind(&{{ toLowerCamelCase .Model.Name }}); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := db.Create(&{{ toLowerCamelCase .Model.Name }}).Error; err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if version.Range("1.0.0", "<=", ver) && version.Range(ver, "<", "2.0.0") {
+		// conditional branch by version.
+		// 1.0.0 <= this version < 2.0.0 !!
+	}
+
+	c.JSON(201, {{ toLowerCamelCase .Model.Name }})
+}
+
+func Update{{ .Model.Name }}(c *gin.Context) {
+	ver, err := version.New(c)
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	db := dbpkg.DBInstance(c)
+	id := c.Params.ByName("id")
+	{{ toLowerCamelCase .Model.Name }} := models.{{ .Model.Name }}{}
+
+	if db.First(&{{ toLowerCamelCase .Model.Name }}, id).Error != nil {
+		content := gin.H{"error": "{{ toSnakeCase .Model.Name }} with id#" + id + " not found"}
+		c.JSON(404, content)
+		return
+	}
+
+	if err := c.Bind(&{{ toLowerCamelCase .Model.Name }}); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := db.Save(&{{ toLowerCamelCase .Model.Name }}).Error; err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if version.Range("1.0.0", "<=", ver) && version.Range(ver, "<", "2.0.0") {
+		// conditional branch by version.
+		// 1.0.0 <= this version < 2.0.0 !!
+	}
+
+	c.JSON(200, {{ toLowerCamelCase .Model.Name }})
+}
+
+func Delete{{ .Model.Name }}(c *gin.Context) {
+	ver, err := version.New(c)
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	db := dbpkg.DBInstance(c)
+	id := c.Params.ByName("id")
+	{{ toLowerCamelCase .Model.Name }} := models.{{ .Model.Name }}{}
+
+	if db.First(&{{ toLowerCamelCase .Model.Name }}, id).Error != nil {
+		content := gin.H{"error": "{{ toSnakeCase .Model.Name }} with id#" + id + " not found"}
+		c.JSON(404, content)
+		return
+	}
+
+	if err := db.Delete(&{{ toLowerCamelCase .Model.Name }}).Error; err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if version.Range("1.0.0", "<=", ver) && version.Range(ver, "<", "2.0.0") {
+		// conditional branch by version.
+		// 1.0.0 <= this version < 2.0.0 !!
+	}
+
+	c.Writer.WriteHeader(http.StatusNoContent)
+}

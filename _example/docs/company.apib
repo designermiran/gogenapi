@@ -1,0 +1,91 @@
+# Group Companies
+Welcome to the companies API. This API provides access to the companies service.
+
+## companies [/companies]
+
+### Create company [POST]
+
+Create a new company
+
++ Request company (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.designermirane+json
+    + Attributes
+
+        + name: NAME (string)
+        + url: URL (string, nullable)
+        + jobs (array[job])
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (company, fixed)
+
+### Get companies [GET]
+
+Returns a company list.
+
++ Request (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.designermirane+json
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (array, fixed)
+        + (company)
+
+## company details [/companies/{id}]
+
++ Parameters
+    + id: `1` (enum[string]) - The ID of the desired company.
+        + Members
+            + `1`
+            + `2`
+            + `3`
+
+### Get company [GET]
+
+Returns a company.
+
++ Request (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.designermirane+json
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (company, fixed)
+
+### Update company [PUT]
+
+Update a company.
+
++ Request company (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.designermirane+json
+    + Attributes
+
+        + name: NAME (string)
+        + url: URL (string, nullable)
+        + jobs (array[job])
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (company, fixed)
+
+### Delete company [DELETE]
+
+Delete a company.
+
++ Request (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.designermirane+json
+
++ Response 204
+
+# Data Structures
+## company (object)
+
++ id: *1* (number)
++ name: *NAME* (string)
++ url: *URL* (string, nullable)
++ jobs (array[job])

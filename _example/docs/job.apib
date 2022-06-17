@@ -1,0 +1,94 @@
+# Group Jobs
+Welcome to the jobs API. This API provides access to the jobs service.
+
+## jobs [/jobs]
+
+### Create job [POST]
+
+Create a new job
+
++ Request job (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.designermirane+json
+    + Attributes
+
+        + user_id: 1 (number)
+        + user (user)
+        + company_id: 1 (number)
+        + role_cd: 1 (number)
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (job, fixed)
+
+### Get jobs [GET]
+
+Returns a job list.
+
++ Request (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.designermirane+json
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (array, fixed)
+        + (job)
+
+## job details [/jobs/{id}]
+
++ Parameters
+    + id: `1` (enum[string]) - The ID of the desired job.
+        + Members
+            + `1`
+            + `2`
+            + `3`
+
+### Get job [GET]
+
+Returns a job.
+
++ Request (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.designermirane+json
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (job, fixed)
+
+### Update job [PUT]
+
+Update a job.
+
++ Request job (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.designermirane+json
+    + Attributes
+
+        + user_id: 1 (number)
+        + user (user)
+        + company_id: 1 (number)
+        + role_cd: 1 (number)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (job, fixed)
+
+### Delete job [DELETE]
+
+Delete a job.
+
++ Request (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.designermirane+json
+
++ Response 204
+
+# Data Structures
+## job (object)
+
++ id: *1* (number)
++ user_id: *1* (number)
++ user (user)
++ company_id: *1* (number)
++ role_cd: *1* (number)

@@ -1,0 +1,17 @@
+# API Server
+
+Simple Rest API using gin(framework) & gorm(orm)
+
+## Endpoint list
+{{ range .Models }}
+### {{ pluralize .Name }} Resource
+
+```
+GET    {{ if ne ($.Namespace) "" }}/{{ $.Namespace }}{{ end }}/{{ pluralize (toLower .Name) }}
+GET    {{ if ne ($.Namespace) "" }}/{{ $.Namespace }}{{ end }}/{{ pluralize (toLower .Name) }}/:id
+POST   {{ if ne ($.Namespace) "" }}/{{ $.Namespace }}{{ end }}/{{ pluralize (toLower .Name) }}
+PUT    {{ if ne ($.Namespace) "" }}/{{ $.Namespace }}{{ end }}/{{ pluralize (toLower .Name) }}/:id
+DELETE {{ if ne ($.Namespace) "" }}/{{ $.Namespace }}{{ end }}/{{ pluralize (toLower .Name) }}/:id
+```
+{{ end }}
+server runs at http://localhost:8080

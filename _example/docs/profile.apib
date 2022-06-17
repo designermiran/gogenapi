@@ -1,0 +1,94 @@
+# Group Profiles
+Welcome to the profiles API. This API provides access to the profiles service.
+
+## profiles [/profiles]
+
+### Create profile [POST]
+
+Create a new profile
+
++ Request profile (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.designermirane+json
+    + Attributes
+
+        + user_id: 1 (number)
+        + user (user)
+        + birthday: `2000-01-01 00:00:00` (string)
+        + engaged: false (boolean)
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (profile, fixed)
+
+### Get profiles [GET]
+
+Returns a profile list.
+
++ Request (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.designermirane+json
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (array, fixed)
+        + (profile)
+
+## profile details [/profiles/{id}]
+
++ Parameters
+    + id: `1` (enum[string]) - The ID of the desired profile.
+        + Members
+            + `1`
+            + `2`
+            + `3`
+
+### Get profile [GET]
+
+Returns a profile.
+
++ Request (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.designermirane+json
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (profile, fixed)
+
+### Update profile [PUT]
+
+Update a profile.
+
++ Request profile (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.designermirane+json
+    + Attributes
+
+        + user_id: 1 (number)
+        + user (user)
+        + birthday: `2000-01-01 00:00:00` (string)
+        + engaged: false (boolean)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (profile, fixed)
+
+### Delete profile [DELETE]
+
+Delete a profile.
+
++ Request (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.designermirane+json
+
++ Response 204
+
+# Data Structures
+## profile (object)
+
++ id: *1* (number)
++ user_id: *1* (number)
++ user (user)
++ birthday: `*2000-01-01 00:00:00*` (string)
++ engaged: *false* (boolean)

@@ -1,0 +1,22 @@
+package router
+
+import (
+	"{{ .ImportDir }}/controllers"
+
+	"github.com/gin-gonic/gin"
+)
+
+func Initialize(r *gin.Engine) {
+	r.GET("/", controllers.APIEndpoints)
+
+	api := r.Group("{{ .Namespace }}")
+	{
+{{ range .Models }}
+		api.GET("/{{ pluralize (toSnakeCase .Name) }}", controllers.Get{{ pluralize .Name }})
+		api.GET("/{{ pluralize (toSnakeCase .Name) }}/:id", controllers.Get{{ .Name }})
+		api.POST("/{{ pluralize (toSnakeCase .Name) }}", controllers.Create{{ .Name }})
+		api.PUT("/{{ pluralize (toSnakeCase .Name) }}/:id", controllers.Update{{ .Name }})
+		api.DELETE("/{{ pluralize (toSnakeCase .Name) }}/:id", controllers.Delete{{ .Name }})
+{{ end }}
+	}
+}
