@@ -35,8 +35,8 @@ Go 1.16 or higher is required.
 After installing required version of Go, you can build and install `gogenapi` by
 
 ```bash
-$ go get -d -u github.com/designermirane/gogenapi
-$ cd $GOPATH/src/github.com/designermirane/gogenapi
+$ go get -d -u github.com/designermiran/gogenapi
+$ cd $GOPATH/src/github.com/designermiran/gogenapi
 $ make
 $ make install
 ```
@@ -51,10 +51,10 @@ $ make install
 First, creating by `gogenapi new` command.
 
 ```bash
-$ gogenapi new -u designermirane gogenapi-sample
+$ gogenapi new -u designermiran gogenapi-sample
 ```
 
-generates Golang API server boilerplate under `$GOPATH/src/github.com/designermirane/gogenapi-sample`.
+generates Golang API server boilerplate under `$GOPATH/src/github.com/designermiran/gogenapi-sample`.
 gogenapi supports two database engines; SQLite (`sqlite`) and PostgreSQL (`postgres`) and Mysql (`mysql`). You can specify this by `-d, -database` option.
 
 Available command line options of `gogenapi new` command are:

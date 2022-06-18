@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/designermirane/api-server/controllers"
+	"github.com/designermiran/api-server/controllers"
 
 	"github.com/gin-gonic/gin"
 )

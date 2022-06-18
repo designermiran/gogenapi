@@ -46,11 +46,11 @@ var userModel = &Model{
 
 var detail = &Detail{
 	VCS:       "github.com",
-	User:      "designermirane",
+	User:      "designermiran",
 	Project:   "api-server",
 	Model:     userModel,
 	Models:    []*Model{userModel},
-	ImportDir: "github.com/designermirane/api-server",
+	ImportDir: "github.com/designermiran/api-server",
 	Namespace: "",
 }
 

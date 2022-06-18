@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 
-	dbpkg "github.com/designermirane/api-server/db"
-	"github.com/designermirane/api-server/helper"
-	"github.com/designermirane/api-server/models"
-	"github.com/designermirane/api-server/version"
+	dbpkg "github.com/designermiran/api-server/db"
+	"github.com/designermiran/api-server/helper"
+	"github.com/designermiran/api-server/models"
+	"github.com/designermiran/api-server/version"
 
 	"github.com/gin-gonic/gin"
 )

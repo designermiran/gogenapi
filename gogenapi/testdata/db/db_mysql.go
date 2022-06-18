@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/designermirane/api-server/models"
+	"github.com/designermiran/api-server/models"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"

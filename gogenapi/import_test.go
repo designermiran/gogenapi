@@ -4,9 +4,9 @@ import "testing"
 
 func TestFormatImportDir(t *testing.T) {
 	importPaths := generateImportSlice(
-		"github.com/designermirane/api-server/db",
-		"github.com/designermirane/api-server/models",
-		"github.com/designermirane/api-server/server",
+		"github.com/designermiran/api-server/db",
+		"github.com/designermiran/api-server/models",
+		"github.com/designermiran/api-server/server",
 		"fmt",
 	)
 
@@ -15,7 +15,7 @@ func TestFormatImportDir(t *testing.T) {
 		t.Fatalf("Number of import dir is incorrect. expected: 1, actual: %d", len(result))
 	}
 
-	expect := "github.com/designermirane/api-server"
+	expect := "github.com/designermiran/api-server"
 	if result[0] != expect {
 		t.Fatalf("Incorrect import dir. expected: %s, actual: %s", expect, result[0])
 	}

@@ -84,7 +84,7 @@ func TestParseImport(t *testing.T) {
 	}
 
 	importPath := importPaths[0]
-	expect := "github.com/designermirane/api-server/controllers"
+	expect := "github.com/designermiran/api-server/controllers"
 	if importPath != expect {
 		t.Fatalf("Incorrect import path. expected: %s, actual: %s", expect, importPath)
 	}
